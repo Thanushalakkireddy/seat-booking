@@ -1,0 +1,94 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String    @id @default(auto()) @map("_id") @db.ObjectId
+  name      String?
+  role      String
+  createdAt DateTime  @default(now()) //current TimeStamp
+  email     String
+  pass      String
+  bookings  Booking[]
+}
+
+model Genre {
+  id     String   @id @default(auto()) @map("_id") @db.ObjectId
+  name   String
+  movies Movies[] //one to many relationship with Movies
+}
+
+model Movies {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  title       String
+  desc        String
+  year        Int
+  duration    Int?     @default(120) // in minutes
+  language    String?  @default("English")
+  releaseDate DateTime? @default(now())
+  url         String
+  bannerUrl   String
+  addedAt     DateTime @default(now())
+  genreId     String   @db.ObjectId
+  genre       Genre    @relation(fields: [genreId], references: [id]) //FK
+  rating      Int      @default(0)
+  shows       Show[]
+}
+
+model Theatre {
+  id         String @id @default(auto()) @map("_id") @db.ObjectId
+  name       String
+  location   String
+  totalSeats Int?    @default(0)
+  rows       Int?    @default(10)
+  cols       Int?    @default(10)
+  shows      Show[]
+}
+
+model Show {
+  id        String    @id @default(auto()) @map("_id") @db.ObjectId
+  movieId   String    @db.ObjectId
+  movie     Movies    @relation(fields: [movieId], references: [id], onDelete: Cascade)
+  theatreId String    @db.ObjectId
+  theatre   Theatre   @relation(fields: [theatreId], references: [id], onDelete: Cascade)
+  startTime DateTime
+  seats     Seat[]
+  bookings  Booking[]
+
+  @@unique([movieId, theatreId, startTime])
+}
+
+model Booking {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId      String   @db.ObjectId
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  showId      String   @db.ObjectId
+  show        Show     @relation(fields: [showId], references: [id], onDelete: Cascade)
+  seats       String[] // Array of seat IDs (e.g., ["A1", "A2"])
+  totalAmount Float?   @default(0.0)
+  bookingDate DateTime @default(now())
+  status      String   @default("confirmed") // confirmed, cancelled
+  createdAt   DateTime @default(now())
+
+  @@index([userId])
+  @@index([showId])
+}
+
+model Seat {
+  id            String    @id @default(auto()) @map("_id") @db.ObjectId
+  showId        String    @db.ObjectId
+  show          Show      @relation(fields: [showId], references: [id], onDelete: Cascade)
+  seatNumber    String
+  row           String?
+  col           Int?
+  status        String    @default("available") // available, locked, booked
+  lockedBy      String?   @db.ObjectId // userId
+  lockExpiresAt DateTime?
+
+  @@unique([showId, seatNumber])
+}

@@ -1,0 +1,16 @@
+(base) abhishek@Abhisheks-MacBook-Air server % node test.js
+Request #9: ✅ Success
+Request #4: ✅ Success
+Request #8: ✅ Success
+Request #1: ✅ Success
+Request #0: ✅ Success
+Request #3: ✅ Success
+Request #6: ✅ Success
+Request #7: ✅ Success
+Request #2: ✅ Success
+Request #5: ✅ Success
+Progress: 10/10 requests completed
+
+Final Summary: Success = 10, Failed = 0
+Total time taken: 90515 ms (90.52 seconds)
+(base) abhishek@Abhisheks-MacBook-Air server % 
