@@ -84,7 +84,7 @@ export default function SeatSelection() {
             setSelectedSeats(mySeats);
             setTempSelectedSeats(mySeats);
         }
-    }, [tempSeatOwnership, currentUserId, isBooking]);
+    }, [selectedSeats, tempSeatOwnership, currentUserId, isBooking]);
 
     // Fetch movie details and shows
     useEffect(() => {
@@ -143,7 +143,7 @@ export default function SeatSelection() {
                 }
             });
 
-            if (hasUpdates || Object.keys(remainingTimes).length > 0) {
+            if (hasUpdates) {
                  setRemainingTimes(newRemainingTimes);
             }
             
