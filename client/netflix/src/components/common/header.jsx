@@ -74,7 +74,7 @@ function isAuthenticated() {
 }
 
 export default function Header() {
-  const [authState, setAuthState] = useState(isAuthenticated());
+  const [authState, setAuthState] = useState(false);
   const userRole = getRoleFromToken();
   const dashboardPath = userRole === 'admin' ? '/admin-dashboard' : '/user-dashboard';
   const navigate = useNavigate();
@@ -86,22 +86,9 @@ export default function Header() {
     setAuthState(currentAuth);
   }, [location]);
 
-  // On initial load, make sure auth state is properly set and clear any invalid tokens
+  // Initialize auth state on first render
   useEffect(() => {
-    // Aggressive cleanup of potential zombie cookies to prevent cross-port leakage
-    document.cookie.split(";").forEach((c) => {
-      document.cookie = c
-        .replace(/^ +/, "")
-        .replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
-    });
-
-    const currentAuth = isAuthenticated();
-    setAuthState(currentAuth);
-    
-    // If there was an invalid token, ensure state reflects reality
-    if (!currentAuth && authState) {
-      setAuthState(false);
-    }
+    setAuthState(isAuthenticated());
   }, []);
 
   const handleSignOut = async () => {
