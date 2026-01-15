@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: book-my-show-client
+    env: static
+    buildCommand: cd client/netflix && npm install && npm run build
+    staticPublishPath: client/netflix/dist
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html

@@ -45,12 +45,12 @@ class ErrorBoundary extends React.Component {
               >
                 Reload Page
               </button>
-              <a
-                href="/"
+              <Link
+                to="/"
                 className="bg-gray-700 hover:bg-gray-600 text-white px-6 py-2 rounded-lg font-medium transition-colors flex items-center"
               >
                 Go Home
-              </a>
+              </Link>
             </div>
           </div>
         </div>

@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import axios from "axios";
 
 function MovieCard({ movie }) {
@@ -24,12 +25,12 @@ function MovieCard({ movie }) {
         >
           Watch Trailer
         </a>
-        <a
-          href={`/seats/${movie.id}`}
+        <Link
+          to={`/seats/${movie.id}`}
           className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
         >
           Book Now
-        </a>
+        </Link>
       </div>
     </div>
   );

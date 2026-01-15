@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
 
@@ -78,12 +78,12 @@ export default function WatchMovie() {
                                 Watch Trailer
                             </a>
                             
-                            <a
-                                href={`/seats/${movie.id}`}
+                            <Link
+                                to={`/seats/${movie.id}`}
                                 className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded inline-block"
                             >
                                 Book Now
-                            </a>
+                            </Link>
                         </div>
                     </div>
                 </div>
