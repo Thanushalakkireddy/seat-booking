@@ -1,6 +1,6 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import { BrowserRouter } from 'react-router-dom'
+import { HashRouter } from 'react-router-dom'
 import './main.css'
 import App from './App'
 
@@ -12,8 +12,8 @@ if (!root) {
 } else {
   console.log("main.jsx: Root element found, rendering...");
   createRoot(root).render(
-    <BrowserRouter>
+    <HashRouter>
       <App />
-    </BrowserRouter>
+    </HashRouter>
   )
 }
