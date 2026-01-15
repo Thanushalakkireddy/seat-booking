@@ -17,7 +17,7 @@ export default function ManageTheatres() {
 
     const fetchTheatres = async () => {
         try {
-            const res = await axios.get("http://localhost:8060/api/admin/viewTheatre",
+            const res = await axios.get("https://seat-booking-yfc8.onrender.com/api/admin/viewTheatre",
                 { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } });
             setTheatreList(res.data.data);
         } catch (err) {
@@ -64,7 +64,7 @@ export default function ManageTheatres() {
 
             if (editId) {
                 const res = await axios.patch(
-                    `http://localhost:8060/api/admin/editTheatre/${editId}`,
+                    `https://seat-booking-yfc8.onrender.com/api/admin/editTheatre/${editId}`,
                     payload,
                     headers
                 );
@@ -72,7 +72,7 @@ export default function ManageTheatres() {
                 navigate("/admin/theatres");
             } else {
                 const res = await axios.post(
-                    "http://localhost:8060/api/admin/addTheatre",
+                    "https://seat-booking-yfc8.onrender.com/api/admin/addTheatre",
                     payload,
                     headers
                 );
@@ -86,7 +86,7 @@ export default function ManageTheatres() {
 
     const handleDelete = async (id) => {
         try {
-            const res = await axios.delete(`http://localhost:8060/api/admin/deleteTheatre/${id}`,
+            const res = await axios.delete(`https://seat-booking-yfc8.onrender.com/api/admin/deleteTheatre/${id}`,
                 { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } })
             setMessage(res.data.message);
             fetchTheatres();

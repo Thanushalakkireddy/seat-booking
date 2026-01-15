@@ -22,7 +22,7 @@ export default function BookingConfirmation() {
             }
 
             const response = await axios.get(
-                `http://localhost:8060/api/user/booking/${bookingId}`,
+                `https://seat-booking-yfc8.onrender.com/api/user/booking/${bookingId}`,
                 {
                     headers: {
                         'Authorization': `Bearer ${token}`

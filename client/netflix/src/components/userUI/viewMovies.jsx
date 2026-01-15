@@ -46,7 +46,7 @@ export default function ViewMovies() {
       try {
         // Fetch movies from user endpoint
         const response = await axios.get(
-          "http://localhost:8060/api/user/viewAllMovies"
+          "https://seat-booking-yfc8.onrender.com/api/user/viewAllMovies"
         );
 
         console.log("Fetched movies:", response.data);
@@ -67,7 +67,7 @@ export default function ViewMovies() {
     const fetchGenres = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:8060/api/user/viewAllGenre"
+          "https://seat-booking-yfc8.onrender.com/api/user/viewAllGenre"
         );
         
         console.log("Fetched genres:", response.data);

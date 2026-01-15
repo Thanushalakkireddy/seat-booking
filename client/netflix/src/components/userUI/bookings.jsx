@@ -48,7 +48,7 @@ export default function Bookings() {
 
             // Fetch user's bookings
             const response = await axios.get(
-                `http://localhost:8060/api/user/booked/${userId}`,
+                `https://seat-booking-yfc8.onrender.com/api/user/booked/${userId}`,
                 {
                     headers: {
                         'Authorization': `Bearer ${token}`
@@ -87,26 +87,13 @@ export default function Bookings() {
                 return;
             }
 
-            // Decode token to get user ID
-            const base64Url = token.split('.')[1];
-            const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-            const jsonPayload = decodeURIComponent(
-                atob(base64)
-                    .split("")
-                    .map(function (c) {
-                        return "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2);
-                    })
-                    .join("")
-            );
-            const userId = JSON.parse(jsonPayload).id;
-
             // Find the booking to get movieId and seats
             const booking = bookings.find(b => b.id === bookingId);
             if (!booking) return;
 
             // Cancel the booking
             await axios.post(
-                'http://localhost:8060/api/user/cancel-confirmed-booking',
+                'https://seat-booking-yfc8.onrender.com/api/user/cancel-confirmed-booking',
                 {
                     bookingId: bookingId
                 },

@@ -34,7 +34,7 @@ export default function Register() {
 
     try {
       const response = await axios.post(
-        `http://localhost:8060/api/${formData.role}/register`,
+        `https://seat-booking-yfc8.onrender.com/api/${formData.role}/register`,
         {
           name: formData.username,
           email: formData.email,

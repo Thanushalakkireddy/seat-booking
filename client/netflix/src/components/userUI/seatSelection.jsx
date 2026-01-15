@@ -91,11 +91,11 @@ export default function SeatSelection() {
         const fetchMovieAndShows = async () => {
             try {
                 // Fetch Movie
-                const movieRes = await axios.get(`http://localhost:8060/api/user/viewMovie/${id}`);
+                const movieRes = await axios.get(`https://seat-booking-yfc8.onrender.com/api/user/viewMovie/${id}`);
                 setMovie(movieRes.data);
 
                 // Fetch Shows
-                const showsRes = await axios.get(`http://localhost:8060/api/user/shows/${id}`);
+                const showsRes = await axios.get(`https://seat-booking-yfc8.onrender.com/api/user/shows/${id}`);
                 const fetchedShows = showsRes.data.data || [];
                 setShows(fetchedShows);
                 
@@ -159,7 +159,7 @@ export default function SeatSelection() {
     const fetchBookedSeats = async (showId) => {
         if (!showId) return;
         try {
-            const response = await axios.get(`http://localhost:8060/api/user/booked-seats/${showId}`);
+            const response = await axios.get(`https://seat-booking-yfc8.onrender.com/api/user/booked-seats/${showId}`);
             setBookedSeats(new Set(response.data.confirmedSeats));
             
             // Handle pending seats
@@ -224,7 +224,7 @@ export default function SeatSelection() {
 
             // Create temporary booking
             const response = await axios.post(
-                'http://localhost:8060/api/user/temp-booking',
+                'https://seat-booking-yfc8.onrender.com/api/user/temp-booking',
                 {
                     showId: selectedShow.id,
                     seats: [seat.id],
@@ -264,7 +264,7 @@ export default function SeatSelection() {
 
             // Cancel the booking
             await axios.post(
-                'http://localhost:8060/api/user/cancel-booking',
+                'https://seat-booking-yfc8.onrender.com/api/user/cancel-booking',
                 {
                     showId: selectedShow.id,
                     seats: [seatId]
@@ -411,7 +411,7 @@ export default function SeatSelection() {
             }
 
             const response = await axios.post(
-                'http://localhost:8060/api/user/book',
+                'https://seat-booking-yfc8.onrender.com/api/user/book',
                 {
                     showId: selectedShow.id,
                     seats: Array.from(selectedSeats)
