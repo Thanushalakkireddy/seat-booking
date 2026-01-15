@@ -9,39 +9,39 @@ export default function BookingConfirmation() {
     const [error, setError] = useState(null);
 
     useEffect(() => {
+        const fetchBookingDetails = async () => {
+            try {
+                const token = localStorage.getItem('token');
+                if (!token) {
+                    setError('Please log in to view booking details');
+                    setLoading(false);
+                    return;
+                }
+
+                const response = await axios.get(
+                    `https://seat-booking-yfc8.onrender.com/api/user/booking/${bookingId}`,
+                    {
+                        headers: {
+                            'Authorization': `Bearer ${token}`
+                        }
+                    }
+                );
+
+                if (response.data.status) {
+                    setBooking(response.data.data);
+                } else {
+                    setError('Failed to retrieve booking details');
+                }
+            } catch (err) {
+                console.error('Error fetching booking:', err);
+                setError(err.response?.data?.message || 'Error loading booking details');
+            } finally {
+                setLoading(false);
+            }
+        };
+        
         fetchBookingDetails();
     }, [bookingId]);
-
-    const fetchBookingDetails = async () => {
-        try {
-            const token = localStorage.getItem('token');
-            if (!token) {
-                setError('Please log in to view booking details');
-                setLoading(false);
-                return;
-            }
-
-            const response = await axios.get(
-                `https://seat-booking-yfc8.onrender.com/api/user/booking/${bookingId}`,
-                {
-                    headers: {
-                        'Authorization': `Bearer ${token}`
-                    }
-                }
-            );
-
-            if (response.data.status) {
-                setBooking(response.data.data);
-            } else {
-                setError('Failed to retrieve booking details');
-            }
-        } catch (err) {
-            console.error('Error fetching booking:', err);
-            setError(err.response?.data?.message || 'Error loading booking details');
-        } finally {
-            setLoading(false);
-        }
-    };
 
     if (loading) {
         return (

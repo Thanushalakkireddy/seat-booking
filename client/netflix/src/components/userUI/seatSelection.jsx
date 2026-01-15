@@ -62,7 +62,7 @@ export default function SeatSelection() {
                 }
             }
         }
-    }, [shows, id]);
+    }, [shows, id, selectedShow]);
 
     // Restore/Sync selected seats from tempSeatOwnership
     useEffect(() => {
