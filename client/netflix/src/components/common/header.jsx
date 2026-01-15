@@ -1,5 +1,6 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
+import axios from "axios";
 
 function getRoleFromToken() {
   try {
@@ -103,15 +104,42 @@ export default function Header() {
     }
   }, []);
 
-  const handleSignOut = () => {
-    // Clear the token from localStorage
+  const handleSignOut = async () => {
+    const token = localStorage.getItem("token");
+    const role = getRoleFromToken();
+
+    try {
+      if (token && role === "user") {
+        await axios.post(
+          "https://seat-booking-yfc8.onrender.com/api/user/logout",
+          {},
+          {
+            withCredentials: true,
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+      } else if (token && role === "admin") {
+        await axios.post(
+          "https://seat-booking-yfc8.onrender.com/api/admin/logout",
+          {},
+          {
+            withCredentials: true,
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+      }
+    } catch (error) {
+      console.error("Error during logout:", error);
+    }
+
     localStorage.removeItem("token");
-    // Clear any potential zombie cookies to ensure isolation
     document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-    // Update auth state
     setAuthState(false);
-    // Navigate to sign in page
-    navigate('/');
+    navigate("/");
   };
 
   return (

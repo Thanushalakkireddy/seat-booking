@@ -532,6 +532,16 @@ exports.getBookedMovies = async (req, res) => {
          return res.status(400).send({ status: false, message: "Invalid User ID format" });
     }
 
+    if (!req.user || !req.user.id) {
+        console.error("❌ Unauthorized access attempt to getBookedMovies");
+        return res.status(401).send({ status: false, message: "Unauthorized" });
+    }
+
+    if (req.user.id !== userId) {
+        console.error(`❌ Forbidden access: token user ${req.user.id} trying to access bookings of ${userId}`);
+        return res.status(403).send({ status: false, message: "Forbidden" });
+    }
+
     // 3️⃣ EXECUTE SAFE QUERY
     console.log(`Querying Prisma for userId: ${userId}`);
     
@@ -716,6 +726,14 @@ exports.getUserProfile = async (req, res) => {
   try {
     const { userId } = req.params;
     
+    if (!req.user || !req.user.id) {
+      return res.status(401).send({ status: false, message: 'Unauthorized' });
+    }
+
+    if (req.user.id !== userId) {
+      return res.status(403).send({ status: false, message: 'Forbidden' });
+    }
+
     const user = await prisma.User.findUnique({
       where: { id: userId },
       select: {

@@ -1,9 +1,15 @@
 const express = require("express")
 const app = express()
 require('dotenv').config()
-const cors = require('cors');
-app.use(cors()); // Enable CORS for all origins
-app.use(express.json())//middleware
+const cors = require('cors')
+const cookieParser = require('cookie-parser')
+
+app.use(cors({
+    origin: true,
+    credentials: true
+}))
+app.use(cookieParser())
+app.use(express.json())
 const adminRouter = require('./router/adminRoute');
 const userRouter = require('./router/userRoutes');
 const paymentRouter = require('./router/paymentRoutes');

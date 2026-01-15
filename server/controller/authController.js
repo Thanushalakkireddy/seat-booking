@@ -3,6 +3,17 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
 require('dotenv').config()
+
+const buildCookieOptions = () => {
+  const isProduction = process.env.NODE_ENV === 'production'
+  return {
+    httpOnly: true,
+    secure: isProduction,
+    sameSite: isProduction ? 'none' : 'lax',
+    maxAge: 6 * 60 * 60 * 1000
+  }
+}
+
 exports.adminRegister= async (req,res)=>{
     const {name,role,email,pass} = req.body
     const hashPassword = await bcrypt.hash(pass,10)//10 salts of hashing
@@ -35,12 +46,15 @@ exports.adminLogin = async (req, res) => {
             return res.status(401).json({ message: "Wrong Password" });
 
         const token = jwt.sign(
-    { id: validUser.id, email: email, role: 'admin' },
-    process.env.JWT_SECRET_TOKEN,
-    { expiresIn: '6h' }
-);
+            { id: validUser.id, email: email, role: 'admin' },
+            process.env.JWT_SECRET_TOKEN,
+            { expiresIn: '6h' }
+        );
 
-        res.status(200).json({ message: "Login Successful", token: token });
+        res
+          .cookie('token', token, buildCookieOptions())
+          .status(200)
+          .json({ message: "Login Successful", token });
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
@@ -67,7 +81,10 @@ exports.userLogin = async (req, res) => {
       { expiresIn: '6h' }
     );
 
-    return res.status(200).send({ message: 'Login Successful', token: token });
+    return res
+      .cookie('token', token, buildCookieOptions())
+      .status(200)
+      .send({ message: 'Login Successful', token });
   } catch (err) {
     return res.status(500).send({ message: err.message });
   }
@@ -120,4 +137,24 @@ exports.adminChangePass = async (req,res)=>{
     }catch(err){
          res.status(400).send({status:false,message:err});
     }
+}
+
+exports.userLogout = (req, res) => {
+  const options = buildCookieOptions()
+  res.clearCookie('token', {
+    httpOnly: options.httpOnly,
+    secure: options.secure,
+    sameSite: options.sameSite
+  })
+  return res.status(200).send({ status: true, message: 'Logged out successfully' })
+}
+
+exports.adminLogout = (req, res) => {
+  const options = buildCookieOptions()
+  res.clearCookie('token', {
+    httpOnly: options.httpOnly,
+    secure: options.secure,
+    sameSite: options.sameSite
+  })
+  return res.status(200).send({ status: true, message: 'Logged out successfully' })
 }
