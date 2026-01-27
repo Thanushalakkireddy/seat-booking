@@ -6,7 +6,7 @@ const { sendOTP } = require('../utils/emailSender');
 require('dotenv').config()
 
 // Strict password validation regex
-const PASSWORD_REGEX = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{6}$/;
+const PASSWORD_REGEX = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{6,}$/;
 
 const buildCookieOptions = () => {
   const isProduction = process.env.NODE_ENV === 'production'
@@ -30,7 +30,7 @@ exports.adminRegister = async (req, res) => {
   // Strict password validation
   if (!PASSWORD_REGEX.test(pass)) {
     return res.status(400).send({ 
-      message: 'Password must be exactly 6 characters with at least 1 uppercase, 1 lowercase, 1 number, and 1 special character (!@#$%^&*)', 
+      message: 'Password must be at least 6 characters with at least 1 uppercase, 1 lowercase, 1 number, and 1 special character (!@#$%^&*)', 
       status: false 
     });
   }
@@ -152,7 +152,7 @@ exports.userRegister = async (req, res) => {
   if (!PASSWORD_REGEX.test(pass)) {
     return res.status(400).json({ 
       status: false, 
-      message: 'Password must be exactly 6 characters with at least 1 uppercase, 1 lowercase, 1 number, and 1 special character (!@#$%^&*)' 
+      message: 'Password must be at least 6 characters with at least 1 uppercase, 1 lowercase, 1 number, and 1 special character (!@#$%^&*)' 
     });
   }
 
@@ -248,7 +248,7 @@ exports.adminChangePass = async (req, res) => {
   if (!PASSWORD_REGEX.test(newPass)) {
     return res.status(400).send({ 
       status: false, 
-      message: 'Password must be exactly 6 characters with at least 1 uppercase, 1 lowercase, 1 number, and 1 special character (!@#$%^&*)' 
+      message: 'Password must be at least 6 characters with at least 1 uppercase, 1 lowercase, 1 number, and 1 special character (!@#$%^&*)' 
     });
   }
   

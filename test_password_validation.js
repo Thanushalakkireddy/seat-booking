@@ -5,14 +5,14 @@ const BASE_URL = 'http://localhost:8060';
 
 // Test cases
 const testCases = [
-  { password: 'Pass1!', expected: true, description: 'Valid password' },
+  { password: 'Pass1!', expected: true, description: 'Valid password (6 chars)' },
+  { password: 'Password123!', expected: true, description: 'Valid password (12 chars)' },
   { password: 'pass1!', expected: false, description: 'No uppercase' },
   { password: 'PASS1!', expected: false, description: 'No lowercase' },
   { password: 'Passss!', expected: false, description: 'No number' },
   { password: 'Pass123', expected: false, description: 'No special character' },
   { password: 'Pas1!', expected: false, description: 'Too short (5 chars)' },
-  { password: 'Passw1!', expected: false, description: 'Too long (7 chars)' },
-  { password: 'PASSW1!', expected: false, description: 'No lowercase, too long' },
+  { password: 'PASSW1!', expected: false, description: 'No lowercase' },
 ];
 
 console.log('🧪 Testing Password Validation Regex');
@@ -52,7 +52,7 @@ async function testRegistration() {
     const validResponse = await axios.post(`${BASE_URL}/api/user/register`, {
       name: 'ValidUser',
       email: 'valid@example.com',
-      pass: 'Pass1!' // This should pass validation
+      pass: 'Password123!' // This should pass validation
     });
     console.log('✅ Valid password accepted (OTP sent)');
     console.log('   Response:', validResponse.data.message);

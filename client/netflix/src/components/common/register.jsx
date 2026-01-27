@@ -2,7 +2,7 @@ import axios from "axios";
 import { useState } from "react";
 
 // Strict password validation regex
-const PASSWORD_REGEX = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{6}$/;
+const PASSWORD_REGEX = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{6,}$/;
 
 export default function Register() {
   const [showOtpInput, setShowOtpInput] = useState(false);
@@ -39,7 +39,7 @@ export default function Register() {
 
     // Strict password validation
     if (!PASSWORD_REGEX.test(formData.pass)) {
-      setMessage("Password must be exactly 6 characters with at least 1 uppercase, 1 lowercase, 1 number, and 1 special character (!@#$%^&*). Example: Pass1!");
+      setMessage("Password must be at least 6 characters with at least 1 uppercase, 1 lowercase, 1 number, and 1 special character (!@#$%^&*). Example: Pass1!");
       return;
     }
 
