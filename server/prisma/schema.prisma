@@ -15,6 +15,10 @@ model User {
   email     String
   pass      String
   bookings  Booking[]
+  // OTP fields for email verification and login MFA
+  isVerified Boolean   @default(false)
+  otp        String?
+  otpExpiry  DateTime?
 }
 
 model Genre {

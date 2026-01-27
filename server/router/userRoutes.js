@@ -3,11 +3,12 @@ const router = express.Router()
 const authController = require('../controller/authController')
 const userController = require('../controller/userController')
 const { verifyUser } = require('../middleware/authenticateMiddleware')
-const {userRegister,userLogin, userLogout} = authController;
+const {userRegister,userLogin, userLogout, verifyOTP} = authController;
 const {viewAllMovies, viewAllGenre, viewMoviesByGenre, viewMovieById, rateMovie, searchMovies, bookMovie, createTempBooking, getBookedSeats, cancelTempBooking, cancelConfirmedBooking, getBookedMovies, getUserProfile, getShowsByMovie, getBookingById} = userController;
 
 router.post('/register',userRegister);
 router.post('/login',userLogin);
+router.post('/verify-otp', verifyOTP);
 router.post('/logout', verifyUser, userLogout);
 router.get('/viewAllMovies', viewAllMovies);
 router.get('/viewAllGenre', viewAllGenre);

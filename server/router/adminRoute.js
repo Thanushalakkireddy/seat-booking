@@ -6,7 +6,7 @@ const userController = require('../controller/userController')
 const authenticateMiddleware = require('../middleware/authenticateMiddleware');
 const {verifyAdmin} = authenticateMiddleware;
 
-const {adminLogin,adminRegister,adminChangePass, adminLogout} = authController;
+const {adminLogin,adminRegister,adminChangePass, adminLogout, verifyOTP} = authController;
 const {
     getAllUsers,
     addGenre,
@@ -31,6 +31,7 @@ const {getAllBookings, adminCancelBooking} = userController;
 // Public routes
 router.post('/register',adminRegister);
 router.post('/login',adminLogin);
+router.post('/verify-otp', verifyOTP);
 router.post('/logout', adminLogout);
 
 // Protected routes

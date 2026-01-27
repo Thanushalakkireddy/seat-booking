@@ -2,6 +2,8 @@ import axios from "axios";
 import { useState } from "react";
 
 export default function Register() {
+  const [showOtpInput, setShowOtpInput] = useState(false);
+  const [otp, setOtp] = useState("");
   const [message, setMessage] = useState("");
   const [formData, setFormData] = useState({
     username: "",
@@ -32,9 +34,37 @@ export default function Register() {
       return;
     }
 
+    if (showOtpInput) {
+      if (!otp) {
+        setMessage("Please enter the OTP.");
+        return;
+      }
+      try {
+        const response = await axios.post(
+          `http://localhost:8060/api/${formData.role}/verify-otp`,
+          {
+            email: formData.email,
+            otp: otp
+          }
+        );
+        if (response.status === 200) {
+           setMessage("✅ Verification Successful! You can now login.");
+           localStorage.setItem("token", response.data.token);
+           // Optional: Navigate to dashboard or login. 
+           // For now, let's reset form or leave it as is.
+           setFormData({ username: "", email: "", pass: "", role: "user" });
+           setShowOtpInput(false);
+           setOtp("");
+        }
+      } catch (err) {
+        setMessage(`❌ ${err.response?.data?.message || err.message}`);
+      }
+      return;
+    }
+
     try {
       const response = await axios.post(
-        `https://seat-booking-yfc8.onrender.com/api/${formData.role}/register`,
+        `http://localhost:8060/api/${formData.role}/register`,
         {
           name: formData.username,
           email: formData.email,
@@ -44,8 +74,8 @@ export default function Register() {
       );
 
       if (response.data.status) {
-        setMessage("✅ Registration Successful! Please Log In.");
-        setFormData({ username: "", email: "", pass: "" }); // Clear fields
+        setMessage("✅ OTP Sent! Please check your email.");
+        setShowOtpInput(true);
       } else {
         setMessage(`❌ ${response.data.message}`);
       }
@@ -62,43 +92,55 @@ export default function Register() {
           <span className="text-white mb-4 text-center block">{message}</span>
         )}
         <form onSubmit={handleSubmit}>
-          <input
-            type="text"
-            name="username"
-            value={formData.username}
-            onChange={handleChange}
-            placeholder="Username"
-            className="w-full mb-4 px-3 py-2 rounded-md bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-600"
-          />
-          <input
-            type="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            placeholder="Email"
-            className="w-full mb-4 px-3 py-2 rounded-md bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-600"
-          />
-          <input
-            type="password"
-            name="pass"
-            value={formData.pass}
-            onChange={handleChange}
-            placeholder="Password"
-            className="w-full mb-6 px-3 py-2 rounded-md bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-600"
-          />
-          <select
-            value={formData.role}
-            onChange={handleRoleChange}
-            className="w-full mb-4 px-3 py-2 rounded-md bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-600"
-          >
-            <option value="user">User</option>
-            <option value="admin">Admin</option>
-          </select>
+          {!showOtpInput ? (
+            <>
+              <input
+                type="text"
+                name="username"
+                value={formData.username}
+                onChange={handleChange}
+                placeholder="Username"
+                className="w-full mb-4 px-3 py-2 rounded-md bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-600"
+              />
+              <input
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                placeholder="Email"
+                className="w-full mb-4 px-3 py-2 rounded-md bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-600"
+              />
+              <input
+                type="password"
+                name="pass"
+                value={formData.pass}
+                onChange={handleChange}
+                placeholder="Password"
+                className="w-full mb-6 px-3 py-2 rounded-md bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-600"
+              />
+              <select
+                value={formData.role}
+                onChange={handleRoleChange}
+                className="w-full mb-4 px-3 py-2 rounded-md bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-600"
+              >
+                <option value="user">User</option>
+                <option value="admin">Admin</option>
+              </select>
+            </>
+          ) : (
+            <input
+              type="text"
+              value={otp}
+              onChange={(e) => setOtp(e.target.value)}
+              placeholder="Enter 6-digit OTP"
+              className="w-full mb-6 px-3 py-2 rounded-md bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-600"
+            />
+          )}
           <button
             type="submit"
             className="w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-2 rounded-md"
           >
-            Register
+            {showOtpInput ? "Verify OTP & Complete Registration" : "Register"}
           </button>
         </form>
       </div>
