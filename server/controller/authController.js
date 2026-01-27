@@ -5,6 +5,9 @@ const { sendOTP } = require('../utils/emailSender');
 
 require('dotenv').config()
 
+// Strict password validation regex
+const PASSWORD_REGEX = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{6}$/;
+
 const buildCookieOptions = () => {
   const isProduction = process.env.NODE_ENV === 'production'
   return {
@@ -23,6 +26,15 @@ const generateOTP = () => {
 
 exports.adminRegister = async (req, res) => {
   const { name, role, email, pass } = req.body
+  
+  // Strict password validation
+  if (!PASSWORD_REGEX.test(pass)) {
+    return res.status(400).send({ 
+      message: 'Password must be exactly 6 characters with at least 1 uppercase, 1 lowercase, 1 number, and 1 special character (!@#$%^&*)', 
+      status: false 
+    });
+  }
+  
   const hashPassword = await bcrypt.hash(pass, 10)//10 salts of hashing
   const otp = generateOTP();
   const otpExpiry = new Date(Date.now() + 5 * 60 * 1000); // 5 minutes
@@ -135,6 +147,14 @@ exports.userLogin = async (req, res) => {
 exports.userRegister = async (req, res) => {
   const { name, email, pass } = req.body;
   console.log(req.body);
+  
+  // Strict password validation
+  if (!PASSWORD_REGEX.test(pass)) {
+    return res.status(400).json({ 
+      status: false, 
+      message: 'Password must be exactly 6 characters with at least 1 uppercase, 1 lowercase, 1 number, and 1 special character (!@#$%^&*)' 
+    });
+  }
 
   try {
     // Check if user already exists
@@ -223,11 +243,21 @@ exports.verifyOTP = async (req, res) => {
 exports.adminChangePass = async (req, res) => {
   const adminId = req.params.id;
   const { newPass } = req.body;
-  console.log(newPass);
+  
+  // Strict password validation
+  if (!PASSWORD_REGEX.test(newPass)) {
+    return res.status(400).send({ 
+      status: false, 
+      message: 'Password must be exactly 6 characters with at least 1 uppercase, 1 lowercase, 1 number, and 1 special character (!@#$%^&*)' 
+    });
+  }
+  
   try {
+    // Hash the password after validation passes
+    const hashedPass = await bcrypt.hash(newPass, 10);
     const updateData = await prisma.User.update({
       where: { id: adminId },
-      data: { pass: newPass }
+      data: { pass: hashedPass }
     })
     res.status(201).send({ status: true, message: updateData });
   } catch (err) {

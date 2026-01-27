@@ -1,6 +1,9 @@
 import axios from "axios";
 import { useState } from "react";
 
+// Strict password validation regex
+const PASSWORD_REGEX = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{6}$/;
+
 export default function Register() {
   const [showOtpInput, setShowOtpInput] = useState(false);
   const [otp, setOtp] = useState("");
@@ -31,6 +34,12 @@ export default function Register() {
 
     if (!formData.username || !formData.email || !formData.pass) {
       setMessage("All fields are required.");
+      return;
+    }
+
+    // Strict password validation
+    if (!PASSWORD_REGEX.test(formData.pass)) {
+      setMessage("Password must be exactly 6 characters with at least 1 uppercase, 1 lowercase, 1 number, and 1 special character (!@#$%^&*). Example: Pass1!");
       return;
     }
 
