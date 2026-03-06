@@ -12,7 +12,7 @@ export default function WatchMovie() {
         const fetchMovie = async () => {
             try {
                 const response = await axios.get(
-                    `https://seat-booking-yfc8.onrender.com/api/user/viewMovie/${id}`
+                    `http://your-public-ip:5000/api/user/viewMovie/${id}`
                 );
                 
                 if (response.data) {

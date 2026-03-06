@@ -11,7 +11,7 @@ export default function AddGenre() {
     const fetchData = async () => {
       try {
         const res = await axios.get(
-          "https://seat-booking-yfc8.onrender.com/api/admin/viewGenre",
+          "http://your-public-ip:5000/api/admin/viewGenre",
           { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } }
         );
         setGenreList(res.data.data);
@@ -31,14 +31,14 @@ export default function AddGenre() {
       if (update!== -1) {
         //update genre
         res = await axios.patch(
-          `https://seat-booking-yfc8.onrender.com/api/admin/genre/${genreList[update].id}`,
+          `http://your-public-ip:5000/api/admin/genre/${genreList[update].id}`,
           { name: genreName },
           { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } }
         );
       } else {
         //add genre
         res = await axios.post(
-          "https://seat-booking-yfc8.onrender.com/api/admin/genre",
+          "http://your-public-ip:5000/api/admin/genre",
           { name: genreName },
           { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } }
         );
@@ -61,7 +61,7 @@ export default function AddGenre() {
     try {
       // eslint-disable-next-line no-unused-vars
       res = axios.delete(
-        `https://seat-booking-yfc8.onrender.com/api/admin/genreDelete/${id}`,
+        `http://your-public-ip:5000/api/admin/genreDelete/${id}`,
         { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } }
       );
       setMessage("Deleted Successfully");

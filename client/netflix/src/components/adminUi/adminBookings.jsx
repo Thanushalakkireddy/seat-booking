@@ -53,7 +53,7 @@ export default function AdminBookings() {
 
             // Fetch all bookings
             const response = await axios.get(
-                'https://seat-booking-yfc8.onrender.com/api/admin/all-bookings',
+                'http://your-public-ip:5000/api/admin/all-bookings',
                 {
                     headers: {
                         'Authorization': `Bearer ${token}`
@@ -85,7 +85,7 @@ export default function AdminBookings() {
 
             // Cancel the booking
             await axios.post(
-                'https://seat-booking-yfc8.onrender.com/api/admin/cancel-booking',
+                'http://your-public-ip:5000/api/admin/cancel-booking',
                 {
                     bookingId: bookingId
                 },

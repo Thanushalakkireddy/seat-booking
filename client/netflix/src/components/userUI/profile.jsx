@@ -52,7 +52,7 @@ export default function Profile() {
 
                 // Fetch user profile
                 const profileResponse = await axios.get(
-                    `https://seat-booking-yfc8.onrender.com/api/user/profile/${userId}`,
+                    `http://your-public-ip:5000/api/user/profile/${userId}`,
                     {
                         headers: {
                             'Authorization': `Bearer ${token}`
@@ -66,7 +66,7 @@ export default function Profile() {
 
                 // Fetch user's bookings
                 const bookingsResponse = await axios.get(
-                    `https://seat-booking-yfc8.onrender.com/api/user/booked/${userId}`,
+                    `http://your-public-ip:5000/api/user/booked/${userId}`,
                     {
                         headers: {
                             'Authorization': `Bearer ${token}`

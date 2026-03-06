@@ -98,7 +98,7 @@ export default function Header() {
     try {
       if (token && role === "user") {
         await axios.post(
-          "https://seat-booking-yfc8.onrender.com/api/user/logout",
+          "http://your-public-ip:5000/api/user/logout",
           {},
           {
             withCredentials: true,
@@ -109,7 +109,7 @@ export default function Header() {
         );
       } else if (token && role === "admin") {
         await axios.post(
-          "https://seat-booking-yfc8.onrender.com/api/admin/logout",
+          "http://your-public-ip:5000/api/admin/logout",
           {},
           {
             withCredentials: true,

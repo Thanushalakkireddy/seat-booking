@@ -48,7 +48,7 @@ export default function Bookings() {
 
             // Fetch user's bookings
             const response = await axios.get(
-                `https://seat-booking-yfc8.onrender.com/api/user/booked/${userId}`,
+                `http://your-public-ip:5000/api/user/booked/${userId}`,
                 {
                     headers: {
                         'Authorization': `Bearer ${token}`
@@ -93,7 +93,7 @@ export default function Bookings() {
 
             // Cancel the booking
             await axios.post(
-                'https://seat-booking-yfc8.onrender.com/api/user/cancel-confirmed-booking',
+                'http://your-public-ip:5000/api/user/cancel-confirmed-booking',
                 {
                     bookingId: bookingId
                 },
