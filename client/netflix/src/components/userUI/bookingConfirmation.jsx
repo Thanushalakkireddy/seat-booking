@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams, Link } from "react-router-dom";
+import { API_BASE_URL } from '../../config/api.js';
 
 export default function BookingConfirmation() {
     const { bookingId } = useParams();
@@ -19,7 +20,7 @@ export default function BookingConfirmation() {
                 }
 
                 const response = await axios.get(
-                    `http://localhost:8060/api/user/booking/${bookingId}`,
+                    `${API_BASE_URL}/api/user/booking/${bookingId}`,
                     {
                         headers: {
                             'Authorization': `Bearer ${token}`

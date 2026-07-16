@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
+import { API_BASE_URL } from '../../config/api.js';
 
 function getRoleFromToken(token) {
   try {
@@ -45,7 +46,7 @@ export default function MainContent() {
     
     try{
     const response = await axios.post(
-    `http://localhost:8060/api/${role}/login`,
+    `${API_BASE_URL}/api/${role}/login`,
     {email:email,pass:pass,role:role});
 
      setMessage(response.data.message);

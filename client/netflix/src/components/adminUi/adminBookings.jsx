@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { API_BASE_URL } from '../../config/api.js';
 
 export default function AdminBookings() {
     const [bookings, setBookings] = useState([]);
@@ -53,7 +54,7 @@ export default function AdminBookings() {
 
             // Fetch all bookings
             const response = await axios.get(
-                'http://localhost:8060/api/admin/all-bookings',
+                '${API_BASE_URL}/api/admin/all-bookings',
                 {
                     headers: {
                         'Authorization': `Bearer ${token}`
@@ -85,7 +86,7 @@ export default function AdminBookings() {
 
             // Cancel the booking
             await axios.post(
-                'http://localhost:8060/api/admin/cancel-booking',
+                '${API_BASE_URL}/api/admin/cancel-booking',
                 {
                     bookingId: bookingId
                 },

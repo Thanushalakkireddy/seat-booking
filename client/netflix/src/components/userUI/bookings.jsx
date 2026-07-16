@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { Link, useLocation } from "react-router-dom";
+import { API_BASE_URL } from '../../config/api.js';
 
 export default function Bookings() {
     const [bookings, setBookings] = useState([]);
@@ -48,7 +49,7 @@ export default function Bookings() {
 
             // Fetch user's bookings
             const response = await axios.get(
-                `http://localhost:8060/api/user/booked/${userId}`,
+                `${API_BASE_URL}/api/user/booked/${userId}`,
                 {
                     headers: {
                         'Authorization': `Bearer ${token}`
@@ -93,7 +94,7 @@ export default function Bookings() {
 
             // Cancel the booking
             await axios.post(
-                'http://localhost:8060/api/user/cancel-confirmed-booking',
+                '${API_BASE_URL}/api/user/cancel-confirmed-booking',
                 {
                     bookingId: bookingId
                 },

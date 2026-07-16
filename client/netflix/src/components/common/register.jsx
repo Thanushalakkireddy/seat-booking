@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { API_BASE_URL } from '../../config/api.js';
 
 // Strict password validation regex
 const PASSWORD_REGEX = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{6,}$/;
@@ -52,7 +53,7 @@ export default function Register() {
       }
       try {
         const response = await axios.post(
-          `http://localhost:8060/api/${formData.role}/verify-otp`,
+          `${API_BASE_URL}/api/${formData.role}/verify-otp`,
           {
             email: formData.email,
             otp: otp
@@ -77,7 +78,7 @@ export default function Register() {
 
     try {
       const response = await axios.post(
-        `http://localhost:8060/api/${formData.role}/register`,
+        `${API_BASE_URL}/api/${formData.role}/register`,
         {
           name: formData.username,
           email: formData.email,

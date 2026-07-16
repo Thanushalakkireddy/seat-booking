@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import { API_BASE_URL } from '../../config/api.js';
 
 function MovieCard({ movie }) {
   return (
@@ -47,7 +48,7 @@ export default function ViewMovies() {
       try {
         // Fetch movies from user endpoint
         const response = await axios.get(
-          "http://localhost:8060/api/user/viewAllMovies"
+          "${API_BASE_URL}/api/user/viewAllMovies"
         );
 
         console.log("Fetched movies:", response.data);
@@ -68,7 +69,7 @@ export default function ViewMovies() {
     const fetchGenres = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:8060/api/user/viewAllGenre"
+          "${API_BASE_URL}/api/user/viewAllGenre"
         );
         
         console.log("Fetched genres:", response.data);
