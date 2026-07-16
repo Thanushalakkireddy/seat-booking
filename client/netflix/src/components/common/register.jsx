@@ -1,10 +1,12 @@
 import axios from "axios";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 // Strict password validation regex
 const PASSWORD_REGEX = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{6,}$/;
 
 export default function Register() {
+  const navigate = useNavigate();
   const [showOtpInput, setShowOtpInput] = useState(false);
   const [otp, setOtp] = useState("");
   const [message, setMessage] = useState("");
@@ -57,13 +59,15 @@ export default function Register() {
           }
         );
         if (response.status === 200) {
-           setMessage("✅ Verification Successful! You can now login.");
-           localStorage.setItem("token", response.data.token);
-           // Optional: Navigate to dashboard or login. 
-           // For now, let's reset form or leave it as is.
+           setMessage("Registration successful. Please sign in to continue.");
+           // Don't set token
+           // Reset form and navigate to sign in
            setFormData({ username: "", email: "", pass: "", role: "user" });
            setShowOtpInput(false);
            setOtp("");
+           // Wait a moment to show message then navigate, or navigate immediately
+           // Let's navigate immediately with replace
+           navigate("/signin", { replace: true });
         }
       } catch (err) {
         setMessage(`❌ ${err.response?.data?.message || err.message}`);

@@ -83,22 +83,17 @@ exports.adminLogin = async (req, res) => {
     if (!validPass)
       return res.status(401).json({ message: "Wrong Password" });
 
-    // Generate and send OTP
-    const otp = generateOTP();
-    const otpExpiry = new Date(Date.now() + 5 * 60 * 1000);
+    // Generate JWT token directly without OTP
+    const token = jwt.sign(
+      { id: validUser.id, email: validUser.email, role: validUser.role },
+      process.env.JWT_SECRET_TOKEN,
+      { expiresIn: '6h' }
+    );
 
-    await prisma.User.update({
-      where: { id: validUser.id },
-      data: { otp, otpExpiry }
-    });
-
-    const emailResult = await sendOTP(email, otp);
-    
-    if (!emailResult.success) {
-       return res.status(500).json({ message: 'Failed to send OTP email: ' + emailResult.error });
-    }
-
-    res.status(200).json({ message: "OTP sent to email", email: email });
+    res
+      .cookie('token', token, buildCookieOptions())
+      .status(200)
+      .json({ message: "Login successful", token, role: validUser.role });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
@@ -123,22 +118,17 @@ exports.userLogin = async (req, res) => {
     if (!validPass)
       return res.status(400).json({ message: 'Wrong Password' });
 
-    // Generate and send OTP
-    const otp = generateOTP();
-    const otpExpiry = new Date(Date.now() + 5 * 60 * 1000);
+    // Generate JWT token directly without OTP
+    const token = jwt.sign(
+      { id: validUser.id, email: validUser.email, role: validUser.role },
+      process.env.JWT_SECRET_TOKEN,
+      { expiresIn: '6h' }
+    );
 
-    await prisma.User.update({
-      where: { id: validUser.id },
-      data: { otp, otpExpiry }
-    });
-
-    const emailResult = await sendOTP(email, otp);
-    
-    if (!emailResult.success) {
-      return res.status(500).json({ message: 'Failed to send OTP email: ' + emailResult.error });
-    }
-
-    return res.status(200).send({ message: 'OTP sent to email', email: email });
+    res
+      .cookie('token', token, buildCookieOptions())
+      .status(200)
+      .json({ message: 'Login successful', token, role: validUser.role });
   } catch (err) {
     return res.status(500).send({ message: err.message });
   }

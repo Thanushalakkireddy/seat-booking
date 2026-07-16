@@ -19,7 +19,7 @@ export default function BookingConfirmation() {
                 }
 
                 const response = await axios.get(
-                    `http://your-public-ip:5000/api/user/booking/${bookingId}`,
+                    `http://localhost:8060/api/user/booking/${bookingId}`,
                     {
                         headers: {
                             'Authorization': `Bearer ${token}`

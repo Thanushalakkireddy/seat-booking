@@ -52,7 +52,7 @@ export default function Profile() {
 
                 // Fetch user profile
                 const profileResponse = await axios.get(
-                    `http://your-public-ip:5000/api/user/profile/${userId}`,
+                    `http://localhost:8060/api/user/profile/${userId}`,
                     {
                         headers: {
                             'Authorization': `Bearer ${token}`
@@ -66,7 +66,7 @@ export default function Profile() {
 
                 // Fetch user's bookings
                 const bookingsResponse = await axios.get(
-                    `http://your-public-ip:5000/api/user/booked/${userId}`,
+                    `http://localhost:8060/api/user/booked/${userId}`,
                     {
                         headers: {
                             'Authorization': `Bearer ${token}`

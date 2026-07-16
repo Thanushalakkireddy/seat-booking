@@ -11,7 +11,7 @@ export default function AddMovie() {
     useEffect(()=>{
         const fetchMovies= async()=>{
             try{
-    const res = await axios.get("http://your-public-ip:5000/api/admin/viewMovies",
+    const res = await axios.get("http://localhost:8060/api/admin/viewMovies",
     {headers:{Authorization:`Bearer ${localStorage.getItem('token')}`}});
             setMovieList(res.data.data);
             console.log(res.data.data);
@@ -34,7 +34,7 @@ export default function AddMovie() {
     useEffect(()=>{
         const fetchGenres= async()=>{
             try{
-    const res = await axios.get("http://your-public-ip:5000/api/admin/viewGenre",
+    const res = await axios.get("http://localhost:8060/api/admin/viewGenre",
     {headers:{Authorization:`Bearer ${localStorage.getItem('token')}`}})
     setGenreList(res.data.data);
     console.log(res.data.data);
@@ -93,7 +93,7 @@ export default function AddMovie() {
                     bannerUrl: payload.bannerUrl
                 };
                 const res = await axios.patch(
-                    `http://your-public-ip:5000/api/admin/editMovie/${editId}`,
+                    `http://localhost:8060/api/admin/editMovie/${editId}`,
                     editPayload,
                     tokenHeader
                 );
@@ -101,7 +101,7 @@ export default function AddMovie() {
                 navigate("/add-movie");
             } else {
                 const res = await axios.post(
-                    "http://your-public-ip:5000/api/admin/addMovie",
+                    "http://localhost:8060/api/admin/addMovie",
                     payload,
                     tokenHeader
                 );
@@ -119,7 +119,7 @@ export default function AddMovie() {
 
         try{
             // 2. Call DELETE API
-            const res = await axios.delete(`http://your-public-ip:5000/api/admin/deleteMovie/${id}`,
+            const res = await axios.delete(`http://localhost:8060/api/admin/deleteMovie/${id}`,
             {headers:{Authorization:`Bearer ${localStorage.getItem('token')}`}})
             
             setMessage(res.data.message);

@@ -11,7 +11,7 @@ export default function AddGenre() {
     const fetchData = async () => {
       try {
         const res = await axios.get(
-          "http://your-public-ip:5000/api/admin/viewGenre",
+          "http://localhost:8060/api/admin/viewGenre",
           { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } }
         );
         setGenreList(res.data.data);
@@ -31,14 +31,14 @@ export default function AddGenre() {
       if (update!== -1) {
         //update genre
         res = await axios.patch(
-          `http://your-public-ip:5000/api/admin/genre/${genreList[update].id}`,
+          `http://localhost:8060/api/admin/genre/${genreList[update].id}`,
           { name: genreName },
           { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } }
         );
       } else {
         //add genre
         res = await axios.post(
-          "http://your-public-ip:5000/api/admin/genre",
+          "http://localhost:8060/api/admin/genre",
           { name: genreName },
           { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } }
         );
@@ -61,7 +61,7 @@ export default function AddGenre() {
     try {
       // eslint-disable-next-line no-unused-vars
       res = axios.delete(
-        `http://your-public-ip:5000/api/admin/genreDelete/${id}`,
+        `http://localhost:8060/api/admin/genreDelete/${id}`,
         { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } }
       );
       setMessage("Deleted Successfully");

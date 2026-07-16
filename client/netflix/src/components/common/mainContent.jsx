@@ -1,4 +1,3 @@
-import Header from "./header";
 import bg from "../../assets/bg.jpg";
 import { useState } from "react";
 import { Link } from "react-router-dom";
@@ -31,38 +30,11 @@ export default function MainContent() {
   const [pass,setPass]=useState("");
   const [role,setRole]= useState("user");
   const [message,setMessage]= useState(null);
-  const [otp, setOtp] = useState("");
-  const [showOtpInput, setShowOtpInput] = useState(false);
 
   const handleSubmit= async ()=>{
     // Validate inputs before making API call
     if (!email) {
       setMessage("Please enter your email.");
-      return;
-    }
-
-    if (showOtpInput) {
-      if (!otp) {
-        setMessage("Please enter the OTP.");
-        return;
-      }
-      try {
-         const response = await axios.post(
-          `http://localhost:8060/api/${role}/verify-otp`,
-          {email:email, otp:otp}
-         );
-         setMessage(response.data.message);
-         localStorage.setItem("token", response.data.token);
-         
-         const userRole = getRoleFromToken(response.data.token);
-         if (userRole === 'admin') {
-           navigate('/admin-dashboard');
-         } else {
-           navigate('/user-dashboard');
-         }
-      } catch(err) {
-         setMessage(err.response?.data?.message || err.message);
-      }
       return;
     }
 
@@ -74,12 +46,15 @@ export default function MainContent() {
     try{
     const response = await axios.post(
     `http://localhost:8060/api/${role}/login`,
-    {email:email,pass:pass,role:role})
+    {email:email,pass:pass,role:role});
 
      setMessage(response.data.message);
-     // Login now returns "OTP sent", no token yet.
+     // Login successful, save token and navigate with replace
      if (response.status === 200) {
-        setShowOtpInput(true);
+        localStorage.setItem("token", response.data.token);
+        const userRole = getRoleFromToken(response.data.token);
+        const dashboardPath = userRole === 'admin' ? '/admin-dashboard' : '/user-dashboard';
+        navigate(dashboardPath, { replace: true });
      }
     }catch(err){
        setMessage(err.response?.data?.message || err.message);
@@ -94,7 +69,6 @@ export default function MainContent() {
       <div className="absolute inset-0 bg-black/60"></div>
       {/* Content above overlay */}
       <div className="relative z-10">
-        {/* Header */}
         {/* Sign In Form */}
         <div className="flex justify-center mt-0">
           <div className="bg-gray-900 bg-opacity-80 p-10 rounded-lg w-full max-w-md">
@@ -105,8 +79,6 @@ export default function MainContent() {
                {message}
             </span>
             {/* Email Input */}
-            {!showOtpInput ? (
-              <>
             <input
              value={email}
              onChange={(e)=>{setEmail(e.target.value)}}
@@ -130,23 +102,12 @@ export default function MainContent() {
                 <option value="user">User</option>
                 <option value="admin">Admin</option>
             </select>
-            </>
-            ) : (
-              <input
-              value={otp}
-              onChange={(e)=>{setOtp(e.target.value)}}
-               type="text"
-               placeholder="Enter OTP"
-               required="true"
-               className="w-full mb-6 px-3 py-2 rounded-md bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-600"
-             />
-            )}
             <button
               type="submit"
               className="w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-2 rounded-md"
               onClick={handleSubmit}
             >
-              {showOtpInput ? "Verify OTP" : "Sign In"}
+              Sign In
             </button>
             <div className="mt-4 text-gray-400 text-sm">
              

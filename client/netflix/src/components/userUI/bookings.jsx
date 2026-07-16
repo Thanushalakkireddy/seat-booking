@@ -48,7 +48,7 @@ export default function Bookings() {
 
             // Fetch user's bookings
             const response = await axios.get(
-                `http://your-public-ip:5000/api/user/booked/${userId}`,
+                `http://localhost:8060/api/user/booked/${userId}`,
                 {
                     headers: {
                         'Authorization': `Bearer ${token}`
@@ -93,7 +93,7 @@ export default function Bookings() {
 
             // Cancel the booking
             await axios.post(
-                'http://your-public-ip:5000/api/user/cancel-confirmed-booking',
+                'http://localhost:8060/api/user/cancel-confirmed-booking',
                 {
                     bookingId: bookingId
                 },

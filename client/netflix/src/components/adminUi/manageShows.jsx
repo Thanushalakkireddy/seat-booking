@@ -19,7 +19,7 @@ export default function ManageShows() {
 
     const fetchShows = async () => {
         try {
-            const res = await axios.get("http://your-public-ip:5000/api/admin/viewShows",
+            const res = await axios.get("http://localhost:8060/api/admin/viewShows",
                 { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } });
             setShowList(res.data.data);
         } catch (err) {
@@ -29,7 +29,7 @@ export default function ManageShows() {
 
     const fetchMovies = async () => {
         try {
-            const res = await axios.get("http://your-public-ip:5000/api/admin/viewMovies",
+            const res = await axios.get("http://localhost:8060/api/admin/viewMovies",
                 { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } });
             setMovieList(res.data.data);
         } catch (err) {
@@ -39,7 +39,7 @@ export default function ManageShows() {
 
     const fetchTheatres = async () => {
         try {
-            const res = await axios.get("http://your-public-ip:5000/api/admin/viewTheatre",
+            const res = await axios.get("http://localhost:8060/api/admin/viewTheatre",
                 { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } });
             setTheatreList(res.data.data);
         } catch (err) {
@@ -86,7 +86,7 @@ export default function ManageShows() {
 
             if (editId) {
                 const res = await axios.patch(
-                    `http://your-public-ip:5000/api/admin/editShow/${editId}`,
+                    `http://localhost:8060/api/admin/editShow/${editId}`,
                     formData,
                     headers
                 );
@@ -94,7 +94,7 @@ export default function ManageShows() {
                 navigate("/admin/shows");
             } else {
                 const res = await axios.post(
-                    "http://your-public-ip:5000/api/admin/addShow",
+                    "http://localhost:8060/api/admin/addShow",
                     formData,
                     headers
                 );
@@ -108,7 +108,7 @@ export default function ManageShows() {
 
     const handleDelete = async (id) => {
         try {
-            const res = await axios.delete(`http://your-public-ip:5000/api/admin/deleteShow/${id}`,
+            const res = await axios.delete(`http://localhost:8060/api/admin/deleteShow/${id}`,
                 { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } })
             setMessage(res.data.message);
             fetchShows();

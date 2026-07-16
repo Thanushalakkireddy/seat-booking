@@ -53,7 +53,7 @@ export default function AdminBookings() {
 
             // Fetch all bookings
             const response = await axios.get(
-                'http://your-public-ip:5000/api/admin/all-bookings',
+                'http://localhost:8060/api/admin/all-bookings',
                 {
                     headers: {
                         'Authorization': `Bearer ${token}`
@@ -85,7 +85,7 @@ export default function AdminBookings() {
 
             // Cancel the booking
             await axios.post(
-                'http://your-public-ip:5000/api/admin/cancel-booking',
+                'http://localhost:8060/api/admin/cancel-booking',
                 {
                     bookingId: bookingId
                 },

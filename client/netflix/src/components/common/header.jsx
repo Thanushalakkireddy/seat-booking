@@ -1,6 +1,6 @@
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
-import axios from "axios";
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
 
 function getRoleFromToken() {
   try {
@@ -98,7 +98,7 @@ export default function Header() {
     try {
       if (token && role === "user") {
         await axios.post(
-          "http://your-public-ip:5000/api/user/logout",
+          "http://localhost:8060/api/user/logout",
           {},
           {
             withCredentials: true,
@@ -109,7 +109,7 @@ export default function Header() {
         );
       } else if (token && role === "admin") {
         await axios.post(
-          "http://your-public-ip:5000/api/admin/logout",
+          "http://localhost:8060/api/admin/logout",
           {},
           {
             withCredentials: true,
@@ -130,42 +130,57 @@ export default function Header() {
   };
 
   return (
-    <div className=" bg-gray-900 px-3 py-1">
-      <div className="flex items-center justify-between">
+    <div className="bg-gray-900 px-4 py-3 shadow-lg">
+      <div className="flex items-center justify-between max-w-7xl mx-auto">
         {/* Logo Col */}
-        <div className="">
-          <h1 className="text-red-500 text-[35px] font-bold ">Book My Show</h1>
+        <div className="flex items-center gap-6">
+          <Link to="/">
+            <h1 className="text-red-500 text-3xl md:text-4xl font-bold cursor-pointer hover:text-red-400 transition-colors">
+              Book My Show
+            </h1>
+          </Link>
+          {authState && (
+            <Link
+              to="/"
+              className="text-gray-300 hover:text-white text-lg font-medium transition-colors"
+            >
+              Home
+            </Link>
+          )}
         </div>
-        {/* Language Col */}
-        <div >
-          <select  className="text-white border border-white text-sm
-            rounded-sm flex-right px-2 mr-3">
-            <option>English</option>
-            <option>Hindi</option>
-          </select>
+
+        {/* Right side buttons */}
+        <div className="flex items-center gap-3">
+
           {authState ? (
             <>
               <Link to={dashboardPath}>
-                <button className="bg-red-500 text-white rounded-sm px-3">
+                <button className="bg-red-600 hover:bg-red-700 text-white font-semibold px-4 py-2 rounded-md transition-colors">
                   Dashboard
                 </button>
               </Link>
-              <button 
+              <button
                 onClick={handleSignOut}
-                className="bg-red-500 text-white rounded-sm px-3 ml-3"
+                className="bg-gray-700 hover:bg-gray-600 text-white font-semibold px-4 py-2 rounded-md transition-colors"
               >
                 Sign Out
               </button>
             </>
           ) : (
-            <Link to="/">
-              <button className="bg-red-500 text-white rounded-sm px-3">
-                Sign In
-              </button>
-            </Link>
+            <>
+              <Link to="/">
+                <button className="bg-gray-700 hover:bg-gray-600 text-white font-semibold px-4 py-2 rounded-md transition-colors">
+                  Home
+                </button>
+              </Link>
+              <Link to="/signin">
+                <button className="bg-red-600 hover:bg-red-700 text-white font-semibold px-4 py-2 rounded-md transition-colors">
+                  Sign In
+                </button>
+              </Link>
+            </>
           )}
         </div>
-
       </div>
     </div>
   );
